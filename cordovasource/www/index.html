@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="format-detection" content="telephone=no" />
+<meta name="robots" content="index, follow">
+<meta name="author" content="Wira Dwi Susanto">
+<title>Aplikasi Cordova</title>
+<link rel="stylesheet" type="text/css" href="css/default.css">
+<link rel="stylesheet" type="text/css" href="css/spinner.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<style type="text/css">
+body{background-color: rgba(0,0,0,0.3);}
+</style>
+<div class="container" style="background-color: white; margin-top: 100px; margin-bottom: 100px; width: 95%;">
+<div class="loading" name="loading" id="loading" style="display: none;">Loading&#8230;</div>
+				<form name="myModal" id="myModal" style="display: block;">
+					<center><h3>Login Pengguna</h3></center>
+					<center>
+					<div class="alert alert-danger" name="notifLogin" id="notifLogin" style="display: none;">
+					  Anda harus login terlebih dahulu.
+					</div>
+					</center>
+					<center>
+					<div class="alert alert-success" name="notifLogin2" id="notifLogin2" style="display: none;"></div>
+					</center>
+					<div class="form-group">
+						<i class="fa fa-user"></i> Username:
+						<input type="text" class="form-control" name="usernameLogin" id="usernameLogin" placeholder="Username..." value="" maxlength="64" required>
+					</div>
+					<div class="form-group">
+						<i class="fa fa-lock"></i> Password:
+						<input type="password" class="form-control" name="passwordLogin" id="passwordLogin" placeholder="Password..." value="" maxlength="64" required>					
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-primary btn-block btn-lg" name="loginBtn" id="loginBtn"> LOGIN</button>
+					</div>
+					<center><p>Belum punya akun? <a href="#" name="klikDaftar" id="klikDaftar"> Daftar</a></p></center>
+				</form>
+
+				<form name="myModal2" id="myModal2" style="display: none;">
+					<center><h3>Registrasi Pengguna</h3></center>
+					<center>
+					<div class="alert alert-danger" name="notifRegister" id="notifRegister" style="display: none;">
+					</div>
+					</center>
+					<center>
+					<div class="alert alert-success" name="notifRegister2" id="notifRegister2" style="display: none;"></div>
+					</center>
+					<div class="form-group">
+						<i class="fa fa-user"></i> Nama Lengkap:
+						<input type="text" class="form-control" name="namaLengkapRegister" id="namaLengkapRegister" placeholder="Nama Lengkap..." value="" maxlength="64" required>
+					</div>
+					<div class="form-group">
+						<i class="fa fa-user"></i> Username:
+						<input type="text" class="form-control" name="usernameRegister" id="usernameRegister" placeholder="Username..." value="" maxlength="64" required>
+					</div>
+					<div class="form-group">
+						<i class="fa fa-lock"></i> Password:
+						<input type="password" class="form-control" name="passwordRegister" id="passwordRegister" placeholder="Password..." value="" maxlength="64" required>					
+					</div>
+					<div class="form-group">
+						<i class="fa fa-lock"></i> Secret Key:
+						<input type="text" class="form-control" name="secretKeyRegister" id="secretKeyRegister" placeholder="Untuk Test, Masukkan: okelanjut12345" value="" maxlength="32" required>					
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-primary btn-block btn-lg" name="registerBtn" id="registerBtn"> REGISTER</button>
+					</div>
+					<center><p>Sudah punya akun? <a href="#" name="klikLogin" id="klikLogin"> Login</a></p></center>
+				</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+//CHECK SUDAH LOGIN ATAU BELUM?
+$.ajax({
+	        type:'GET',
+	        url: "https://api.kmsp-store.com/pasienapi/auth/tokeninfo",
+	        data:{},
+	        dataType:'JSON',
+	        'contentType': 'application/x-www-form-urlencoded',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        $('#loading').css('display', 'none');
+	        $("#myModal").css('display', 'block');
+	        $("#notifLogin").css('display', 'inline-block');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        request.setRequestHeader("Authorization", "Bearer " + window.localStorage.getItem('BearerTokenPasienAPK_235678'));
+	        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+	        $('#loading').css('display', 'inline-block');
+	        },
+	        success:function(s){
+		        if(s['Code'] == "01")
+		        {
+		        	//SESSION BEARER TOKEN EXPIRED
+		        	$('#loading').css('display', 'none');
+		        	$("#myModal").css('display', 'block');
+		        	$("#notifLogin").css('display', 'inline-block');
+		        }
+
+		        if(s['Code'] == "00")
+		        {
+		        	//SESSION BEARER TOKEN MASIH AKTIF
+	        		$('#loading').css('display', 'none');
+	        		window.location.href='dashboard.html';
+	        		//console.log(window.localStorage.getItem('BearerTokenPasienAPK_235678'));
+		        }
+	        }
+	        });
+
+$('#klikDaftar').click(function(){
+$('#notifRegister').html('');
+$('#notifRegister').css('display', 'none');
+$('#notifRegister2').html('');
+$('#notifRegister2').css('display', 'none');
+$("#myModal").css('display', 'none');
+$("#myModal2").css('display', 'block');
+});
+
+$('#klikLogin').click(function(){
+$("#myModal2").css('display', 'none');
+$("#myModal").css('display', 'block');
+});
+
+$('#loginBtn').click(function(){
+var username = $('#usernameLogin').val();
+var password = $('#passwordLogin').val();
+
+$.ajax({
+        type:'POST',
+        url: "https://api.kmsp-store.com/pasienapi/auth/authorize?client_id=61fc89692eefa0b1a73f74a837b81a59",
+        'data':JSON.stringify({"username":username, "password":password}),
+        dataType:'JSON',
+        'contentType': 'application/json',
+        error:function(xhr, ajaxOptions, thrownError){
+        $('#notifLogin').html('Terjadi kesalahan saat login. Silakan coba lagi!');
+	    $('#notifLogin').css('display', 'inline-block');
+	    $('#notifLogin2').html('');
+	    $('#notifLogin2').css('display', 'none');
+        },
+        cache:false,
+        beforeSend:function(request){
+        request.setRequestHeader("Authorization", "Basic N2Q5NmY2OTc5MDMxOWNmNmM1ZmViMjU4NDllYjQ0ODU6MGFhYmZkYjEwN2EwYTBjYmI0YTVlYTk3MjQyOTZjZGM==");
+        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+        },
+        success:function(s){
+	        if(s['Code'] == "01")
+	        {
+	        	//GAGAL
+	        	$('#notifLogin').html(s['message']);
+	        	$('#notifLogin').css('display', 'inline-block');
+	        	$('#notifLogin2').html('');
+	    		$('#notifLogin2').css('display', 'none');
+	        }
+
+	        if(s['Code'] == "00")
+	        {
+	    		window.localStorage.setItem('authIdTokenPasienAPK_235678', s['authId']);
+	    		login();
+	        }
+        }
+        });
+});
+
+function login()
+{
+		$.ajax({
+	        type:'GET',
+	        url: "https://api.kmsp-store.com/pasienapi/auth/access_token?client_id=61fc89692eefa0b1a73f74a837b81a59",
+	        data:{},
+	        dataType:'JSON',
+	        'contentType': 'application/x-www-form-urlencoded',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        $('#notifLogin').html('Terjadi kesalahan saat login. Silakan coba lagi!');
+		    $('#notifLogin').css('display', 'inline-block');
+		    $('#notifLogin2').html('');
+		    $('#notifLogin2').css('display', 'none');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        request.setRequestHeader("authId", window.localStorage.getItem('authIdTokenPasienAPK_235678'));
+	        request.setRequestHeader("Authorization", "Basic N2Q5NmY2OTc5MDMxOWNmNmM1ZmViMjU4NDllYjQ0ODU6MGFhYmZkYjEwN2EwYTBjYmI0YTVlYTk3MjQyOTZjZGM==");
+	        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+	        },
+	        success:function(s){
+		        if(s['Code'] == "01")
+		        {
+		        	// GAGAL
+		        	$('#notifLogin').html('Terjadi kesalahan saat login. Silakan coba lagi!');
+				    $('#notifLogin').css('display', 'inline-block');
+				    $('#notifLogin2').html('');
+				    $('#notifLogin2').css('display', 'none');
+		        }
+
+		        if(s['Code'] == "00")
+		        {
+		        	//SUKSES
+	        		$('#notifLogin').html('');
+		        	$('#notifLogin').css('display', 'none');
+		        	$('#notifLogin2').html('Login Sukses');
+		    		$('#notifLogin2').css('display', 'inline-block');
+		    		window.localStorage.setItem('BearerTokenPasienAPK_235678', s['access_token']);
+		    		console.log(s['access_token']);
+	        		window.location.href='dashboard.html';
+		        }
+	        }
+	        });
+}
+
+$('#registerBtn').click(function(){
+var nama_lengkap = $('#namaLengkapRegister').val();
+var username = $('#usernameRegister').val();
+var password = $('#passwordRegister').val();
+var secret_key = $('#secretKeyRegister').val();
+
+$.ajax({
+        type:'POST',
+        url: "https://api.kmsp-store.com/pasienapi/auth/register",
+        'data':JSON.stringify({"nama_lengkap":nama_lengkap, "username":username, "password":password, "secret_key":secret_key}),
+        dataType:'JSON',
+        'contentType': 'application/json',
+        error:function(xhr, ajaxOptions, thrownError){
+        $('#notifRegister').html('Terjadi kesalahan saat registrasi. Silakan coba lagi!');
+	    $('#notifRegister').css('display', 'inline-block');
+	    $('#notifRegister2').html('');
+	    $('#notifRegister2').css('display', 'none');
+        },
+        cache:false,
+        beforeSend:function(request){
+        request.setRequestHeader("Authorization", "Basic N2Q5NmY2OTc5MDMxOWNmNmM1ZmViMjU4NDllYjQ0ODU6MGFhYmZkYjEwN2EwYTBjYmI0YTVlYTk3MjQyOTZjZGM==");
+        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+        },
+        success:function(s){
+	        if(s['Code'] == "01")
+	        {
+	        	//GAGAL
+	        	$('#notifRegister').html(s['message']);
+	        	$('#notifRegister').css('display', 'inline-block');
+	        	$('#notifRegister2').html('');
+	    		$('#notifRegister2').css('display', 'none');
+	        }
+
+	        if(s['Code'] == "00")
+	        {
+	        	$('#notifRegister').html('');
+	        	$('#notifRegister').css('display', 'none');
+	        	$('#notifRegister2').html(s['message']);
+	    		$('#notifRegister2').css('display', 'inline-block');
+	        }
+        }
+        });
+});
+});
+</script>
+</body>
+</html>

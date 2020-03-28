@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="format-detection" content="telephone=no" />
+<meta name="robots" content="index, follow">
+<meta name="author" content="Wira Dwi Susanto">
+<title>Dashboard - Aplikasi Cordova</title>
+<link rel="stylesheet" type="text/css" href="css/spinner.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+<style type="text/css">
+body {
+    font: 400 15px Lato, sans-serif;
+    line-height: 1.8;
+    color: #818181;
+  }
+  h2 {
+    font-size: 24px;
+    text-transform: uppercase;
+    color: #303030;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  h4 {
+    font-size: 19px;
+    line-height: 1.375em;
+    color: #303030;
+    font-weight: 400;
+    margin-bottom: 30px;
+  }  
+  .jumbotron {
+    background-color: #f4511e;
+    color: #fff;
+    padding: 100px 25px;
+    font-family: Montserrat, sans-serif;
+  }
+  .container-fluid {
+    padding: 60px 50px;
+  }
+  .bg-grey {
+    background-color: #f6f6f6;
+  }
+  .logo-small {
+    color: #f4511e;
+    font-size: 50px;
+  }
+  .logo {
+    color: #f4511e;
+    font-size: 200px;
+  }
+  .thumbnail {
+    padding: 0 0 15px 0;
+    border: none;
+    border-radius: 0;
+  }
+  .thumbnail img {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10px;
+  }
+  .carousel-control.right, .carousel-control.left {
+    background-image: none;
+    color: #f4511e;
+  }
+  .carousel-indicators li {
+    border-color: #f4511e;
+  }
+  .carousel-indicators li.active {
+    background-color: #f4511e;
+  }
+  .item h4 {
+    font-size: 19px;
+    line-height: 1.375em;
+    font-weight: 400;
+    font-style: italic;
+    margin: 70px 0;
+  }
+  .item span {
+    font-style: normal;
+  }
+  .panel {
+    border: 1px solid #f4511e; 
+    border-radius:0 !important;
+    transition: box-shadow 0.5s;
+  }
+  .panel:hover {
+    box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+  }
+  .panel-footer .btn:hover {
+    border: 1px solid #f4511e;
+    background-color: #fff !important;
+    color: #f4511e;
+  }
+  .panel-heading {
+    color: #fff !important;
+    background-color: #f4511e !important;
+    padding: 25px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+  .panel-footer {
+    background-color: white !important;
+  }
+  .panel-footer h3 {
+    font-size: 32px;
+  }
+  .panel-footer h4 {
+    color: #aaa;
+    font-size: 14px;
+  }
+  .panel-footer .btn {
+    margin: 15px 0;
+    background-color: #f4511e;
+    color: #fff;
+  }
+  .navbar {
+    margin-bottom: 0;
+    background-color: #f4511e;
+    z-index: 9999;
+    border: 0;
+    font-size: 12px !important;
+    line-height: 1.42857143 !important;
+    letter-spacing: 4px;
+    border-radius: 0;
+    font-family: Montserrat, sans-serif;
+  }
+  .navbar li a, .navbar .navbar-brand {
+    color: #fff !important;
+  }
+  .navbar-nav li a:hover, .navbar-nav li.active a {
+    color: #f4511e !important;
+    background-color: #fff !important;
+  }
+  .navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #fff !important;
+  }
+  footer .glyphicon {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #f4511e;
+  }
+  .slideanim {visibility:hidden;}
+  .slide {
+    animation-name: slide;
+    -webkit-animation-name: slide;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    visibility: visible;
+  }
+  @keyframes slide {
+    0% {
+      opacity: 0;
+      transform: translateY(70%);
+    } 
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
+  @-webkit-keyframes slide {
+    0% {
+      opacity: 0;
+      -webkit-transform: translateY(70%);
+    } 
+    100% {
+      opacity: 1;
+      -webkit-transform: translateY(0%);
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .col-sm-4 {
+      text-align: center;
+      margin: 25px 0;
+    }
+    .btn-lg {
+      width: 100%;
+      margin-bottom: 35px;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .logo {
+      font-size: 150px;
+    }
+  }
+
+.kotak{background-color: red; color: white; border: solid red; padding-top: 10px; padding-left: 10px; padding-right: 10px; padding-bottom: 2px; width: 100%; border-radius: 4px;}
+.kotaktext{color: white; font-family: "Roboto";}
+</style>
+<div name="isShow" id="isShow" style="display: none;">
+<div class="container" name="containernya" id="containernya">
+<div class="loading" name="loading" id="loading" style="display: none;">Loading&#8230;</div>
+<div id="about" class="container-fluid" style="text-align: justify;">
+<div class="kotak" style="margin-top: 10px; margin-bottom: 10px;">
+<p class="kotaktext" name="welcometext" id="welcometext">Selamat Datang,</p>
+<p class="kotaktext" name="logoutButton" id="logoutButton" style="cursor: pointer;"><i class="fa fa-sign-in" aria-hidden="true"></i> <b>(LOGOUT)</b></p>
+</div>
+<center><b><p name="waktunya" id="waktunya">Waktu: </p></b></center>
+<center>
+	<div class="alert alert-danger" name="notifLihat" id="notifLihat" style="display: none;"></div>
+	</center>
+	<center>
+	<div class="alert alert-success" name="notifLihat2" id="notifLihat2" style="display: none;"></div>
+	</center>
+  <div class="row">
+    <div class="col-sm-12">
+      <ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#home" name="berandaclick" id="berandaclick">Beranda</a></li>
+  <li><a data-toggle="tab" href="#menu1" name="lihatpasienclick" id="lihatpasienclick">Lihat</a></li>
+  <li><a data-toggle="tab" href="#menu2" name="insertpasienclick" id="insertpasienclick">Insert</a></li>
+  <li><a data-toggle="tab" href="#menu3" name="editpasienclick" id="editpasienclick">Edit</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="home" class="tab-pane fade in active">
+    <h3>Selamat Datang di Panel Pendataan Pasien</h3>
+    <p>Rumah Sakit Loro Terus</p>
+    <div name="covidinfopanel" id="covidinfopanel" style="display: none;">
+    <hr style="border-style: dashed;">
+    <p style="text-align: justify; font-weight: bold;">Daftar Informasi Korban Virus Corona Terupdate (Indonesia):</p>
+    <p style="text-align: justify;" name="terkonfirmasi" id="terkonfirmasi">- Terkonfirmasi: <span class="label label-warning">- orang</span></p>
+    <p style="text-align: justify;" name="dalam_perawatan" id="dalam_perawatan">- Dirawat: <span class="label label-primary">- orang</span></p>
+    <p style="text-align: justify;" name="sembuh" id="sembuh">- Sembuh: <span class="label label-success">- orang</span></p>
+    <p style="text-align: justify;" name="kematian" id="kematian">- Meninggal: <span class="label label-danger">- orang</span></p>
+    <hr style="border-style: dashed;">
+    <p style="text-align: justify; font-weight: bold;">Daftar Informasi Korban Virus Corona Terupdate (Dunia):</p>
+    <p style="text-align: justify;" name="positif" id="positif">- Positif: <span class="label label-warning">- orang</span></p>
+    <p style="text-align: justify;" name="sembuh2" id="sembuh2">- Sembuh: <span class="label label-success">- orang</span></p>
+    <p style="text-align: justify;" name="kematian2" id="kematian2">- Meninggal: <span class="label label-danger">- orang</span></p>
+    <hr style="border-style: dashed;">
+    <p style="text-align: justify; font-weight: bold;" name="updated_at" id="updated_at">Updated: </p>
+	</div>
+  </div>
+  <div id="menu1" class="tab-pane fade">
+    <h3>List/Daftar Pasien</h3>
+    <p>Daftar Pasien RS Loro Terus:</p>
+    <div style="overflow-x:auto;">
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Ruang Pasien</th>
+        <th>Alamat</th>
+        <th>Umur</th>
+        <th>Gol Darah</th>
+        <th>Jenis Kelamin</th>
+        <th>Keluhan</th>
+        <th>Hapus</th>
+      </tr>
+    </thead>
+    <tbody name="listhasiltable" id="listhasiltable">
+    </tbody>
+  </table>
+</div>
+  </div>
+  <div id="menu2" class="tab-pane fade">
+    <h3>Insert Pasien</h3>
+    <form name="insertForm" id="insertForm">
+	  <div class="form-group">
+	    <label for="insert_nama_lengkap">Nama Lengkap:</label>
+	    <input type="text" class="form-control" name="insert_nama_lengkap" id="insert_nama_lengkap" value="" placeholder="Nama Lengkap..." maxlength="64" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="insert_ruang_pasien">Ruang Pasien:</label>
+	    <input type="text" class="form-control" name="insert_ruang_pasien" id="insert_ruang_pasien" value="" placeholder="Ruang Pasien..." maxlength="64" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="insert_alamat_pasien">Alamat:</label>
+	    <input type="text" class="form-control" name="insert_alamat_pasien" id="insert_alamat_pasien" value="" placeholder="Alamat Pasien..." maxlength="64" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="insert_umur_pasien">Umur:</label>
+	    <input type="number" class="form-control" name="insert_umur_pasien" id="insert_umur_pasien" value="" placeholder="Umur Pasien..." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="16" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="insert_golongan_darah">Golongan Darah:</label>
+	    <input type="text" class="form-control" name="insert_golongan_darah" id="insert_golongan_darah" value="" placeholder="Golongan Darah..." maxlength="32" required>
+	  </div>
+	  <div class="form-group">
+	  <label for="insert_jenis_kelamin">Jenis Kelamin:</label>
+	  <select class="form-control" name="insert_jenis_kelamin" id="insert_jenis_kelamin">
+	  <option value="1">Laki-laki</option>
+	  <option value="2">Perempuan</option>
+	  <option value="3">Lainnya</option>
+	  </select>
+	  </div>
+	  <div class="form-group">
+	    <label for="insert_keluhan_pasien">Keluhan:</label>
+	    <input type="text" class="form-control" name="insert_keluhan_pasien" id="insert_keluhan_pasien" value="" placeholder="Keluhan..." maxlength="64" required>
+	  </div>
+	  <button type="button" class="btn btn-danger" name="insertPasienButton" id="insertPasienButton"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Insert Data</button>
+	</form>
+  </div>
+  <div id="menu3" class="tab-pane fade">
+    <h3>Edit Pasien</h3>
+     <form name="editForm" id="editForm">
+	  <div class="form-group">
+	    <label for="edit_id_pasien">ID (Masukkan sesuai di Tab Lihat Pasien):</label>
+	    <input type="number" class="form-control" name="edit_id_pasien" id="edit_id_pasien" value="" placeholder="ID..." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="64" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="edit_nama_lengkap">Nama Lengkap:</label>
+	    <input type="text" class="form-control" name="edit_nama_lengkap" id="edit_nama_lengkap" value="" placeholder="Nama Lengkap..." maxlength="64" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="edit_ruang_pasien">Ruang Pasien:</label>
+	    <input type="text" class="form-control" name="edit_ruang_pasien" id="edit_ruang_pasien" value="" placeholder="Ruang Pasien..." maxlength="64" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="edit_alamat_pasien">Alamat:</label>
+	    <input type="text" class="form-control" name="edit_alamat_pasien" id="edit_alamat_pasien" value="" placeholder="Alamat Pasien..." maxlength="64" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="edit_umur_pasien">Umur:</label>
+	    <input type="number" class="form-control" name="edit_umur_pasien" id="edit_umur_pasien" value="" placeholder="Umur Pasien..." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="16" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="edit_golongan_darah">Golongan Darah:</label>
+	    <input type="text" class="form-control" name="edit_golongan_darah" id="edit_golongan_darah" value="" placeholder="Golongan Darah..." maxlength="32" required>
+	  </div>
+	  <div class="form-group">
+	  <label for="edit_jenis_kelamin">Jenis Kelamin:</label>
+	  <select class="form-control" name="edit_jenis_kelamin" id="edit_jenis_kelamin">
+	  <option value="1">Laki-laki</option>
+	  <option value="2">Perempuan</option>
+	  <option value="3">Lainnya</option>
+	  </select>
+	  </div>
+	  <div class="form-group">
+	    <label for="edit_keluhan_pasien">Keluhan:</label>
+	    <input type="text" class="form-control" name="edit_keluhan_pasien" id="edit_keluhan_pasien" value="" placeholder="Keluhan..." maxlength="64" required>
+	  </div>
+	  <button type="button" class="btn btn-danger" name="editPasienButton" id="editPasienButton"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Data</button>
+	</form>
+  </div>
+</div>
+    </div>
+  </div>
+ <hr>
+</div>
+</div>
+
+<footer class="container-fluid text-center" style="margin-top: -60px;">
+  <p>Created By: Wira Dwi Susanto (NIM: 17.01.53.0053)</p>
+</footer>
+</div>
+
+<script>
+$(document).ready(function(){
+  // Add smooth scrolling to all links in navbar + footer link
+  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 900, function(){
+   
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    } // End if
+  });
+  
+  $(window).scroll(function() {
+    $(".slideanim").each(function(){
+      var pos = $(this).offset().top;
+
+      var winTop = $(window).scrollTop();
+        if (pos < winTop + 600) {
+          $(this).addClass("slide");
+        }
+    });
+  });
+
+refresh();
+
+function refresh()
+{
+//CHECK SUDAH LOGIN ATAU BELUM?
+$.ajax({
+	        type:'GET',
+	        url: "https://api.kmsp-store.com/pasienapi/auth/tokeninfo",
+	        data:{},
+	        dataType:'JSON',
+	        'contentType': 'application/x-www-form-urlencoded',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        window.localStorage.setItem('BearerTokenPasienAPK_235678', '');
+		    window.location.href='index.html';
+	        $('#loading').css('display', 'none');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        request.setRequestHeader("Authorization", "Bearer " + window.localStorage.getItem('BearerTokenPasienAPK_235678'));
+	        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+	        $('#loading').css('display', 'inline-block');
+	        },
+	        success:function(s){
+		        if(s['Code'] == "01")
+		        {
+		        	//SESSION BEARER TOKEN EXPIRED
+		        	$('#loading').css('display', 'none');
+		        	window.localStorage.setItem('BearerTokenPasienAPK_235678', '');
+		        	window.location.href='index.html';
+		        }
+
+		        if(s['Code'] == "00")
+		        {
+		        	//SESSION BEARER TOKEN MASIH AKTIF
+		        	$('#isShow').css('display', 'block');
+	        		getHomeDashboardInfo();
+		        }
+	        }
+});
+}
+
+function getHomeDashboardInfo()
+{
+	$.ajax({
+	        type:'GET',
+	        url: "https://api.kmsp-store.com/pasienapi/home_dashboard",
+	        data:{},
+	        dataType:'JSON',
+	        'contentType': 'application/x-www-form-urlencoded',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        $('#loading').css('display', 'none');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        request.setRequestHeader("Authorization", "Bearer " + window.localStorage.getItem('BearerTokenPasienAPK_235678'));
+	        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+	        $('#loading').css('display', 'inline-block');
+	        },
+	        success:function(s){
+		        if(s['Code'] == "01")
+		        {
+		        	//SESSION BEARER TOKEN EXPIRED
+		        	$('#loading').css('display', 'none');
+		        	window.localStorage.setItem('BearerTokenPasienAPK_235678', '');
+		        	window.location.href='index.html';
+		        }
+
+		        if(s['Code'] == "00")
+		        {
+		        	//SESSION BEARER TOKEN MASIH AKTIF
+	        		$('#welcometext').html('Selamat Datang,<br><b>' + s['data']['nama_lengkap'] + ' (' + s['data']['username'] + ')</b>');
+	        		$('#waktunya').html('Waktu: ' + s['data']['time']);
+	        		getDataCovid();
+		        }
+	        }
+	});
+}
+
+function getDataCovid()
+{
+	$.ajax({
+	        type:'GET',
+	        url: "https://api.kmsp-store.com/pasienapi/covid19",
+	        data:{},
+	        dataType:'JSON',
+	        'contentType': 'application/x-www-form-urlencoded',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        $('#loading').css('display', 'none');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        $('#loading').css('display', 'inline-block');
+	        },
+	        success:function(s){
+		        if(s['Code'] == "01")
+		        {
+		        	//
+		        	$('#covidinfopanel').css('display', 'none');
+		        	$('#loading').css('display', 'none');
+		        }
+
+		        if(s['Code'] == "00")
+		        {
+	        		$('#terkonfirmasi').html('- Terkonfirmasi: <span class="label label-warning">' + s['data']['indonesia']['terkonfirmasi'] + ' orang</span>');
+	        		$('#dalam_perawatan').html('- Dirawat: <span class="label label-primary">' + s['data']['indonesia']['dalam_perawatan'] + ' orang</span>');
+	        		$('#sembuh').html('- Sembuh: <span class="label label-success">' + s['data']['indonesia']['sembuh'] + ' orang</span>');
+	        		$('#kematian').html('- Meninggal: <span class="label label-danger">' + s['data']['indonesia']['kematian'] + ' orang</span>');
+
+	        		$('#positif').html('- Positif: <span class="label label-warning">' + s['data']['world']['positif'] + ' orang</span>');
+	        		$('#sembuh2').html('- Sembuh: <span class="label label-success">' + s['data']['world']['sembuh'] + ' orang</span>');
+	        		$('#kematian2').html('- Meninggal: <span class="label label-danger">' + s['data']['world']['kematian'] + ' orang</span>');
+
+	        		$('#updated_at').html('Updated: ' + s['data']['updated_at']);
+
+	        		$('#covidinfopanel').css('display', 'inline-block');
+	        		
+	        		$('#loading').css('display', 'none');
+		        }
+	        }
+	});
+}
+
+$('#berandaclick').click(function(){
+$('#notifLihat2').html('');
+$('#notifLihat2').css('display', 'none');
+$('#notifLihat').html('');
+$('#notifLihat').css('display', 'none');
+refresh();
+});
+
+$('#lihatpasienclick').click(function(){
+$('#notifLihat2').html('');
+$('#notifLihat2').css('display', 'none');
+$('#notifLihat').html('');
+$('#notifLihat').css('display', 'none');
+lihatPasien();
+});
+
+$('#editpasienclick').click(function(){
+$('#notifLihat2').html('');
+$('#notifLihat2').css('display', 'none');
+$('#notifLihat').html('');
+$('#notifLihat').css('display', 'none');
+});
+
+$('#insertpasienclick').click(function(){
+$('#insert_nama_lengkap').val('');
+$('#insert_ruang_pasien').val('');
+$('#insert_alamat_pasien').val('');
+$('#insert_umur_pasien').val('');
+$('#insert_golongan_darah').val('');
+$('#insert_jenis_kelamin').val('');
+$('#insert_keluhan_pasien').val('');
+
+$('#notifLihat2').html('');
+$('#notifLihat2').css('display', 'none');
+$('#notifLihat').html('');
+$('#notifLihat').css('display', 'none');
+});
+
+function lihatPasien()
+{
+$('#listhasiltable').html('');
+$.ajax({
+	        type:'POST',
+	        url: "https://api.kmsp-store.com/pasienapi/get_pasien",
+	        'data':JSON.stringify({"id":"", "filter":"all"}),
+	        dataType:'JSON',
+	        'contentType': 'application/json',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        $('#notifLihat2').css('display', 'none');
+			$('#notifLihat').html('Terjadi masalah. Silakan coba lagi!');
+	        $('#notifLihat').css('display', 'inline-block');
+	        $('#loading').css('display', 'none');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        request.setRequestHeader("Authorization", "Bearer " + window.localStorage.getItem('BearerTokenPasienAPK_235678'));
+	        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+	        $('#loading').css('display', 'inline-block');
+	        },
+	        success:function(s){
+		        if(s['Code'] == "01")
+		        {
+		        	//SESSION BEARER TOKEN EXPIRED
+		        	if(s['message'] == "Sesi telah berakhir")
+		        	{
+			        	$('#loading').css('display', 'none');
+			        	window.localStorage.setItem('BearerTokenPasienAPK_235678', '');
+			        	window.location.href='index.html';
+			        }
+
+			        if(s['message'] != "Sesi telah berakhir")
+			        {
+	            		$('#notifLihat2').css('display', 'none');
+			        	$('#notifLihat').html(s['message']);
+	            		$('#notifLihat').css('display', 'inline-block');
+			        	$('#loading').css('display', 'none');
+			        }
+		        }
+
+		        if(s['Code'] == "00")
+		        {
+		        	var getidnya = 0;
+		        	for(var a = 0; a < s['data'].length; a++)
+            		{
+            			getidnya = parseInt(s['data'][a]['id']);
+            			$('#listhasiltable').append('<tr><td>' + s['data'][a]['id'] + '</td><td>' + s['data'][a]['nama_lengkap'] + '</td><td>' + s['data'][a]['ruang_pasien'] + '</td><td>' + s['data'][a]['alamat'] + '</td><td>' + s['data'][a]['umur'] + '</td><td>' + s['data'][a]['golongan_darah'] + '</td><td>' + s['data'][a]['jenis_kelamin'] + '</td><td>' + s['data'][a]['keluhan'] + '</td><td class="pasienIdList" style="cursor: pointer;" data-id="' + getidnya +'"><i class="fa fa-trash-o" aria-hidden="true"></i> Hapus</td></tr>');
+            		}
+
+            		$('#notifLihat').html('');
+            		$('#notifLihat').css('display', 'none');
+            		$('#notifLihat2').html(s['message']);
+            		$('#notifLihat2').css('display', 'inline-block');
+		        	$('#loading').css('display', 'none');
+		        }
+	        }
+});
+}
+
+$(document).on('click', '.pasienIdList', function(){
+   var data = $(this).data();
+   var getId = data.id;
+	
+	var konfirmasiText1 = confirm("Apakah Anda yakin ingin menghapus data pasien ini?");
+	if(konfirmasiText1 === true)
+	{
+		$.ajax({
+	        type:'DELETE',
+	        url: "https://api.kmsp-store.com/pasienapi/delete_pasien/" + getId,
+	        'data':JSON.stringify({}),
+	        dataType:'JSON',
+	        'contentType': 'application/json',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        $('#loading').css('display', 'none');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        request.setRequestHeader("Authorization", "Bearer " + window.localStorage.getItem('BearerTokenPasienAPK_235678'));
+	        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+	        $('#loading').css('display', 'inline-block');
+	        },
+	        success:function(s){
+		        if(s['Code'] == "01")
+		        {
+		        	//SESSION BEARER TOKEN EXPIRED
+		        	if(s['message'] == "Sesi telah berakhir")
+		        	{
+			        	$('#loading').css('display', 'none');
+			        	window.localStorage.setItem('BearerTokenPasienAPK_235678', '');
+			        	window.location.href='index.html';
+			        }
+
+			        if(s['message'] != "Sesi telah berakhir")
+			        {
+			        	$('#notifLihat2').html('');
+	            		$('#notifLihat2').css('display', 'none');
+			        	$('#notifLihat').html(s['message']);
+	            		$('#notifLihat').css('display', 'inline-block');
+			        	$('#loading').css('display', 'none');
+			        }
+		        }
+
+		        if(s['Code'] == "00")
+		        {
+		        	lihatPasien();
+		        	$('#notifLihat').html('');
+            		$('#notifLihat').css('display', 'none');
+            		$('#notifLihat2').html(s['message']);
+            		$('#notifLihat2').css('display', 'inline-block');
+		        	$('#loading').css('display', 'none');
+		        }
+	        }
+		});
+	}
+});
+
+$('#insertPasienButton').click(function(){
+var nama_pasien_insert = $('#insert_nama_lengkap').val();
+var ruang_pasien_insert = $('#insert_ruang_pasien').val();
+var alamat_pasien_insert = $('#insert_alamat_pasien').val();
+var umur_pasien_insert = $('#insert_umur_pasien').val();
+var golongan_darah_insert = $('#insert_golongan_darah').val();
+var jenis_kelamin_insert = $('#insert_jenis_kelamin').val();
+var keluhan_pasien_insert = $('#insert_keluhan_pasien').val();
+
+$.ajax({
+	        type:'POST',
+	        url: "https://api.kmsp-store.com/pasienapi/insert_pasien",
+	        'data':JSON.stringify({"nama_lengkap":nama_pasien_insert, "ruang_pasien":ruang_pasien_insert, "alamat":alamat_pasien_insert, "umur":umur_pasien_insert, "golongan_darah":golongan_darah_insert, "jenis_kelamin":jenis_kelamin_insert, "keluhan":keluhan_pasien_insert}),
+	        dataType:'JSON',
+	        'contentType': 'application/json',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        $('#notifLihat2').css('display', 'none');
+			$('#notifLihat').html('Terjadi masalah. Silakan coba lagi!');
+	        $('#notifLihat').css('display', 'inline-block');
+	        $('#loading').css('display', 'none');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        request.setRequestHeader("Authorization", "Bearer " + window.localStorage.getItem('BearerTokenPasienAPK_235678'));
+	        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+	        $('#loading').css('display', 'inline-block');
+	        },
+	        success:function(s){
+		        if(s['Code'] == "01")
+		        {
+		        	//SESSION BEARER TOKEN EXPIRED
+		        	if(s['message'] == "Sesi telah berakhir")
+		        	{
+			        	$('#loading').css('display', 'none');
+			        	window.localStorage.setItem('BearerTokenPasienAPK_235678', '');
+			        	window.location.href='index.html';
+			        }
+
+			        if(s['message'] != "Sesi telah berakhir")
+			        {
+	            		$('#notifLihat2').css('display', 'none');
+			        	$('#notifLihat').html(s['message']);
+	            		$('#notifLihat').css('display', 'inline-block');
+			        	$('#loading').css('display', 'none');
+			        }
+		        }
+
+		        if(s['Code'] == "00")
+		        {
+            		$('#notifLihat').html('');
+            		$('#notifLihat').css('display', 'none');
+            		$('#notifLihat2').html(s['message']);
+            		$('#notifLihat2').css('display', 'inline-block');
+		        	$('#loading').css('display', 'none');
+		        }
+	        }
+});
+});
+
+$('#editPasienButton').click(function(){
+var id_pasien_edit = $('#edit_id_pasien').val();
+var nama_pasien_edit = $('#edit_nama_lengkap').val();
+var ruang_pasien_edit = $('#edit_ruang_pasien').val();
+var alamat_pasien_edit = $('#edit_alamat_pasien').val();
+var umur_pasien_edit = $('#edit_umur_pasien').val();
+var golongan_darah_edit = $('#edit_golongan_darah').val();
+var jenis_kelamin_edit = $('#edit_jenis_kelamin').val();
+var keluhan_pasien_edit = $('#edit_keluhan_pasien').val();
+
+$.ajax({
+	        type:'PUT',
+	        url: "https://api.kmsp-store.com/pasienapi/edit_pasien/" + id_pasien_edit,
+	        'data':JSON.stringify({"nama_lengkap":nama_pasien_edit, "ruang_pasien":ruang_pasien_edit, "alamat":alamat_pasien_edit, "umur":umur_pasien_edit, "golongan_darah":golongan_darah_edit, "jenis_kelamin":jenis_kelamin_edit, "keluhan":keluhan_pasien_edit}),
+	        dataType:'JSON',
+	        'contentType': 'application/json',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        $('#notifLihat2').css('display', 'none');
+			$('#notifLihat').html('Terjadi masalah. Silakan coba lagi!');
+	        $('#notifLihat').css('display', 'inline-block');
+	        $('#loading').css('display', 'none');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        request.setRequestHeader("Authorization", "Bearer " + window.localStorage.getItem('BearerTokenPasienAPK_235678'));
+	        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+	        $('#loading').css('display', 'inline-block');
+	        },
+	        success:function(s){
+		        if(s['Code'] == "01")
+		        {
+		        	//SESSION BEARER TOKEN EXPIRED
+		        	if(s['message'] == "Sesi telah berakhir")
+		        	{
+			        	$('#loading').css('display', 'none');
+			        	window.localStorage.setItem('BearerTokenPasienAPK_235678', '');
+			        	window.location.href='index.html';
+			        }
+
+			        if(s['message'] != "Sesi telah berakhir")
+			        {
+	            		$('#notifLihat2').css('display', 'none');
+			        	$('#notifLihat').html(s['message']);
+	            		$('#notifLihat').css('display', 'inline-block');
+			        	$('#loading').css('display', 'none');
+			        }
+		        }
+
+		        if(s['Code'] == "00")
+		        {
+            		$('#notifLihat').html('');
+            		$('#notifLihat').css('display', 'none');
+            		$('#notifLihat2').html(s['message']);
+            		$('#notifLihat2').css('display', 'inline-block');
+		        	$('#loading').css('display', 'none');
+		        }
+	        }
+});
+});
+
+$('#logoutButton').click(function(){
+$.ajax({
+	        type:'GET',
+	        url: "https://api.kmsp-store.com/pasienapi/auth/logout",
+	        data:{},
+	        dataType:'JSON',
+	        'contentType': 'application/x-www-form-urlencoded',
+	        error:function(xhr, ajaxOptions, thrownError){
+	        $('#notifLihat2').css('display', 'none');
+			$('#notifLihat').html('Terjadi masalah. Silakan coba lagi!');
+	        $('#notifLihat').css('display', 'inline-block');
+	        $('#loading').css('display', 'none');
+	        $('#loading').css('display', 'none');
+	        },
+	        cache:false,
+	        beforeSend:function(request){
+	        request.setRequestHeader("Authorization", "Bearer " + window.localStorage.getItem('BearerTokenPasienAPK_235678'));
+	        request.setRequestHeader("clientId", "61fc89692eefa0b1a73f74a837b81a59");
+	        $('#loading').css('display', 'inline-block');
+	        },
+	        success:function(s){
+		      window.localStorage.setItem('BearerTokenPasienAPK_235678', '');
+			  window.location.href='index.html';
+	        }
+});
+});
+});
+</script>
+</body>
+</html>
